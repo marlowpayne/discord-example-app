@@ -1,0 +1,24 @@
+name: discord-bots
+
+services:
+  rps-bot:
+    container_name: discord-bot-rps
+    hostname: discord-bot-rps
+    env_file:
+      - ./.env
+    build:
+      context: ./
+      target: production
+    restart: "unless-stopped"
+  newt:
+    image: fosrl/newt
+    container_name: discord-bot-newt
+    restart: unless-stopped
+    environment:
+      - CONFIG_FILE=/run/secrets/newt-config
+    secrets:
+      - newt-config
+
+secrets:
+  newt-config:
+    file: ./newt-config.secret
